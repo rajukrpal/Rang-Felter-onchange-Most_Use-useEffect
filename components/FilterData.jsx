@@ -155,9 +155,9 @@ function FilterData() {
                             <div>
                                 <form onSubmit={handleSubmit}>
                                     <div className='flex gap-3 justify-center'>
-                                        <input onChange={onChange} value={formData.srartrenge} name="srartrenge" placeholder='Start' className='outline-none bg-slate-200 rounded-md px-2 py-1 w-16' type="text" />
+                                        <input onChange={onChange} value={formData.srartrenge} name="srartrenge" placeholder='Start' className='outline-none text-black bg-slate-200 rounded-md px-2 py-1 w-16' type="text" />
                                         <span className='flex items-center '>-</span>
-                                        <input onChange={onChange} value={formData.endrang} name='endrang' placeholder='End' className='outline-none bg-slate-200 rounded-md  w-16 px-2 py-1' type="text" />
+                                        <input onChange={onChange} value={formData.endrang} name='endrang' placeholder='End' className='outline-none bg-slate-200 text-black rounded-md  w-16 px-2 py-1' type="text" />
                                     </div>
                                 </form>
                             </div>
