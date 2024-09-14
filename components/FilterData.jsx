@@ -263,7 +263,7 @@ function FilterData() {
 
                     </div>
                     {/* Add Card component */}
-                    <div className='grid grid-cols-12 gap-5 px-5 pt-5'>
+                    <div className='grid grid-cols-12 gap-5 md:px-5 px-10 pt-5'>
                         {
                             filterProductData.map((product, index) => (
                                 <>
@@ -276,7 +276,6 @@ function FilterData() {
                                                     className="w-full object-fill h-72 p-5"
                                                 /> */}
                                                 <Image
-                                                    // width={}
                                                     height={288}
                                                     width={1000}
                                                     src={product.image}
@@ -286,8 +285,8 @@ function FilterData() {
                                             </div>
 
                                             <div className="p-3">
-                                                <h2 className="font-bold mb-2 text-base truncate ">{product.title}</h2>
-                                                <p className="text-gray-600 text-sm mb-3 truncate">{product.description}</p>
+                                                <h2 className="font-bold mb-2 text-gray-900 truncate ">{product.title}</h2>
+                                                <p className="text-gray-400 text-sm mb-3 truncate">{product.description}</p>
                                                 <p className="text-gray-900 font-semibold mb-2"> ₹ {product.price}</p>
                                                 <p className="text-gray-700 mb-3 ">Category: {product.category}</p>
                                                 <div className="flex items-center">
