@@ -1,10 +1,10 @@
 "use client"
 import { getProductData } from '@/productApi'
-// import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import { Slider } from "@nextui-org/react";
 import { RiMenuFold2Fill } from "react-icons/ri";
 import { RiMenuFold3Fill } from "react-icons/ri";
+import Image from 'next/image';
 
 
 
@@ -269,11 +269,19 @@ function FilterData() {
                                 <>
                                     <div key={product?.id || index} className='xl:col-span-2 lg:col-span-3 md:col-span-4 col-span-12  '>
                                         <div className="max-w-sm my-5 overflow-hidden rounded-lg shadow-lg bg-white ">
-                                            <div className="flex justify-center">
-                                                <img
+                                            <div className="flex justify-center h-72">
+                                                {/* <img
                                                     src={product.image}
                                                     alt={product.title}
                                                     className="w-full object-fill h-72 p-5"
+                                                /> */}
+                                                <Image
+                                                    // width={}
+                                                    height={288}
+                                                    width={1000}
+                                                    src={product.image}
+                                                    alt={product.title}
+                                                    className="w-full object-contain p-10"
                                                 />
                                             </div>
 
