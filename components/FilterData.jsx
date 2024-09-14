@@ -3,6 +3,10 @@ import { getProductData } from '@/productApi'
 // import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import { Slider } from "@nextui-org/react";
+import { RiMenuFold2Fill } from "react-icons/ri";
+import { RiMenuFold3Fill } from "react-icons/ri";
+
+
 
 function FilterData() {
     const [saveProductData, setSaveProductData] = useState([])
@@ -15,10 +19,10 @@ function FilterData() {
     const [isOpen, setIsOpen] = useState(false);
     const [searchData, setSearchData] = useState("");
     const [selectedRatings, setSelectedRatings] = useState([]);
+    const [isMenuShow, setIsMenuShow] = useState(true);
 
 
-
-
+    const starColors = ['text-red-500', 'text-yellow-500', 'text-blue-900', 'text-purple-900', 'text-green-500']; // star color
 
     // ------- use useEffect than run Application Ans show imidatly data For API ------- ⬇
     useEffect(() => {
@@ -46,7 +50,6 @@ function FilterData() {
     }, [saveProductData, searchData]);
 
 
-
     // ------- Temprorly NOT use ----------- ⬇
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -59,7 +62,6 @@ function FilterData() {
             endrang: "",
         })
     }
-
 
     // -------- onChange Function ------------ ⬇
     const onChange = (e) => {
@@ -100,16 +102,15 @@ function FilterData() {
         setIsOpen(!isOpen);
     };
 
-    const closeDropdown = () => {
+    const closeDropdown = (selectedCategory) => {
         const searchResult = saveProductData.filter(
-            (product) =>
-                product.category?.toString().toLowerCase().includes(searchData.toLowerCase())
+            (product) => product.category.toString().toLowerCase() === selectedCategory.toLowerCase()
         );
         setFilterProductData(searchResult);
         setIsOpen(false);
     };
 
-    // ------------ chack box se felter karne ke liye handleRatingChange function ------------ ⬇
+    // ------------ chack box se felter karne ke liye handleRatingChange function part-1 ------------ ⬇⬇
     const handleRatingChange = (e) => {
         const value = parseInt(e.target.value);
         setSelectedRatings((prevRatings) => {
@@ -123,7 +124,7 @@ function FilterData() {
             }
         });
     };
-    // --------- chack box par jese jese felter ho jaye wese wese data show hone lage --------- ⬇
+    // --------- chack box par jese jese felter ho jaye wese wese data show hone lage part-2 --------- ⬇⬇
     useEffect(() => {
         if (selectedRatings.length === 0) {
             setFilterProductData(saveProductData);
@@ -135,24 +136,28 @@ function FilterData() {
         setFilterProductData(filteredData);
     }, [selectedRatings, saveProductData]);
 
+    // ----------  sidebar show and close -------- ⬇
+    const toggleShowMenu = () => {
+        setIsMenuShow(prevState => !prevState);
+    };
+    console.log("isMenuShow-->", isMenuShow)
 
 
     return (
         <>
-            <div className='w-full border border-red-400 flex h-screen '>
+            <div className='w-full  flex h-screen bg-gradient-to-l from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% '>
                 {/* SideBar  */}
-                <div className='border border-green-300 w-80'>
-                    {/* Input felter onchange */}
+                <div className={` ${isMenuShow === true ? 'w-80 lg:block hidden translate-x-0' : 'fixed lg:hidden block -translate-x-full'}transition-transform duration-300 ease-in-out top-0 left-0 bg-gradient-to-bl from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-screen z-10 `}>
                     <div>
-                        <div className='py-3 font-bold text-xl uppercase text-blue-400 border'><center>Felter Product Data </center> </div>
+                        <div className='md:py-3 py-4 font-bold lg:text-xl text-sm  uppercase gradient-text ' onClick={toggleShowMenu}><center>Filter Product Data </center> </div>
                         <div>
                             <center className='capitalize font-semibold text-blue-300 py-2'>select price</center>
                             <div>
                                 <form onSubmit={handleSubmit}>
                                     <div className='flex gap-3 justify-center'>
-                                        <input onChange={onChange} value={formData.srartrenge} name="srartrenge" placeholder='Start' className='bg-slate-200 rounded-md px-2 py-1 w-16' type="text" />
+                                        <input onChange={onChange} value={formData.srartrenge} name="srartrenge" placeholder='Start' className='outline-none bg-slate-200 rounded-md px-2 py-1 w-16' type="text" />
                                         <span className='flex items-center '>-</span>
-                                        <input onChange={onChange} value={formData.endrang} name='endrang' placeholder='End' className='bg-slate-200 rounded-md  w-16 px-2 py-1' type="text" />
+                                        <input onChange={onChange} value={formData.endrang} name='endrang' placeholder='End' className='outline-none bg-slate-200 rounded-md  w-16 px-2 py-1' type="text" />
                                     </div>
                                 </form>
                             </div>
@@ -160,7 +165,7 @@ function FilterData() {
                     </div>
                     {/* Range felter */}
                     <div className='py-4'>
-                        <h4 className='capitalize py-1'><center>Selete felter Renge</center></h4>
+                        <h4 className='capitalize py-1 font-semibold text-blue-200'><center>Selete felter Renge</center></h4>
                         <div className='flex justify-center'>
                             <div className='w-52'>
                                 <Slider
@@ -178,7 +183,7 @@ function FilterData() {
                     </div>
                     {/* chack box and felter star reateng */}
                     <div>
-                        <h4><center className='capitalize'>Select Rating Star</center></h4>
+                        <h4><center className='capitalize font-semibold text-blue-100'>Select Rating Star</center></h4>
                         <div className='flex gap-5 justify-center pb-4 pt-2'>
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <div key={star} className='flex flex-col items-center'>
@@ -188,7 +193,8 @@ function FilterData() {
                                         onChange={handleRatingChange}
                                         checked={selectedRatings.includes(star)}
                                     />
-                                    <span>{star}</span>
+                                    {/* <span className={`text-red-600`}>{star}</span> */}
+                                    <span className={`${starColors[star - 1]}`}>{star}</span>
                                 </div>
                             ))}
                         </div>
@@ -203,31 +209,26 @@ function FilterData() {
                                         className="px-4 py-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm inline-flex items-center"
                                         onClick={toggleDropdown}
                                     >
-                                        Dropdown <svg class="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                        Dropdown <svg className="w-2.5 h-2.5 ml-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                                         </svg>
                                     </button>
 
                                     {isOpen && (
-                                        <>
-                                            <div className="origin-top-right absolute -right-8 mt-2 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                                                <ul className='border border-red-600 h-52 overflow-y-scroll' role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                    <li>
-                                                        {
-                                                            saveProductData.map((product) => (
-                                                                <a
-                                                                    key={product.id}
-                                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                                    onClick={closeDropdown}
-                                                                >
-                                                                    <span>{product.category}</span>
-                                                                </a>
-                                                            ))
-                                                        }
+                                        <div className="origin-top-right absolute -right-8 mt-2 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                            <ul className='border rounded-lg h-32 overflow-y-scroll no-scrollbar' role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                                {[...new Set(saveProductData.map((product) => product.category))].map((category, index) => (
+                                                    <li key={category || index}>
+                                                        <button
+                                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                            onClick={() => closeDropdown(category)}
+                                                        >
+                                                            {category}
+                                                        </button>
                                                     </li>
-                                                </ul>
-                                            </div>
-                                        </>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -235,19 +236,39 @@ function FilterData() {
                     </div>
                 </div>
                 {/* Body Part */}
-                <div className='border border-purple-700 w-full overflow-y-scroll py-3 pb-5 '>
-                    <div className='border border-green-500 sticky top-0'>
-                        <center>
-                            <input className='w-96 border py-1 rounded-xl px-4 border-red-500' placeholder="Search... title & category" onChange={(e) => setSearchData(e.target.value)} type="search" />
-                        </center>
+                <div className=' w-full overflow-y-scroll pb-5 '>
+                    <div className=' sticky top-0 py-3 bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% flex justify-between items-center px-5'>
+                        <div className='flex items-center'>
+                            <div className='hidden md:flex items-center'>
+                                {isMenuShow === false && (
+                                    <RiMenuFold2Fill
+                                        size={30}
+                                        className='gradient-text'
+                                        onClick={toggleShowMenu}
+                                    />
+                                )}
+                            </div>
+                            <div className='lg:hidden flex items-center'>
+                                {isMenuShow === true && (
+                                    <RiMenuFold2Fill
+                                        size={30}
+                                        className='gradient-text'
+                                        onClick={toggleShowMenu}
+                                    />
+                                )}
+                            </div>
+                        </div>
+
+                        <input className='md:w-96 py-1 rounded-xl px-4 outline-none ' placeholder="Search... title & category" onChange={(e) => setSearchData(e.target.value)} type="search" />
+
                     </div>
                     {/* Add Card component */}
                     <div className='grid grid-cols-12 gap-5 px-5 pt-5'>
                         {
-                            filterProductData.map((product) => (
+                            filterProductData.map((product, index) => (
                                 <>
-                                    <div className='col-span-2 '>
-                                        <div className="max-w-sm my-5 overflow-hidden rounded-lg shadow-lg " key={product.id}>
+                                    <div key={product?.id || index} className='xl:col-span-2 lg:col-span-3 md:col-span-4 col-span-12  '>
+                                        <div className="max-w-sm my-5 overflow-hidden rounded-lg shadow-lg bg-white ">
                                             <div className="flex justify-center">
                                                 <img
                                                     src={product.image}
@@ -278,11 +299,6 @@ function FilterData() {
                 </div>
 
             </div>
-
-
-
-
-
         </>
     )
 }
