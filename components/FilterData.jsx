@@ -196,7 +196,7 @@ function FilterData() {
             <div className='w-full  flex h-screen bg-gray-900 '>
                 <ToastContainer position='top-center' autoClose={1000}/>
                 {/* SideBar  */}
-                <div className={` ${isMenuShow === true ? 'w-80 lg:block hidden translate-x-0' : 'fixed lg:hidden block -translate-x-full'}transition-transform duration-300 ease-in-out top-0 left-0 bg-gradient-to-bl from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-screen z-10 `}>
+                <div className={` ${isMenuShow === true ? 'w-80 lg:block hidden translate-x-0' : 'fixed w-60 lg:hidden block -translate-x-full'}transition-transform duration-300 ease-in-out top-0 left-0 bg-gradient-to-bl from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-screen z-10 `}>
                     <div>
                         <div className='md:py-3 py-4 font-bold lg:text-xl text-sm  uppercase gradient-text cursor-pointer ' onClick={toggleShowMenu}><center>click heare </center> </div>
                         <div>
