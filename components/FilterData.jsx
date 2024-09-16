@@ -161,7 +161,7 @@ function FilterData() {
     // ---------- AddtoProduct function ----------- ⬇
 
     const addToCart = (product) => {
-        toast.success(`Product Add To Cart !`)
+        toast.success(`product add to cart !`)
         const existingProduct = addToProductList.find((item) => item.id === product.id);
         if (existingProduct) {
             const updatedCart = addToProductList.map((item) =>
@@ -333,7 +333,7 @@ function FilterData() {
                                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
                             </div>
                         ) : (
-                            <div className='grid grid-cols-12 gap-5 md:px-5 px-10 pt-5'>
+                            <div className='grid grid-cols-12 gap-5 md:px-5 px-10 pt-5 min-h-[85vh]'>
                                 {
                                     filterProductData.map((product, index) => (
                                         <div key={product?.id || index} className='xl:col-span-2 lg:col-span-3 md:col-span-4 col-span-12  '>
