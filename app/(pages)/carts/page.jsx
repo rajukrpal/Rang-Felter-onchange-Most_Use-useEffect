@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function cart() {
@@ -17,6 +19,7 @@ function cart() {
     }, []);
 
     const removeToCart = (product) => {
+        toast.error("Remove Product !");
         const existingProduct = addToProductList.find((item) => item.id === product.id);
         if (existingProduct && existingProduct.quantity > 1) {
             const updatedCart = addToProductList.map((item) =>
@@ -36,6 +39,7 @@ function cart() {
     return (
         <>
             <div className='bg-gray-900 h-screen'>
+                <ToastContainer position='top-center' autoClose={1000} />
                 <div className='flex items-center gap-5 px-5 sticky top-0 bg-gray-700'>
                     <div className='text-blue-500'>
                         <Link href={'/'}><FaArrowAltCircleLeft className='' size={25} /></Link>

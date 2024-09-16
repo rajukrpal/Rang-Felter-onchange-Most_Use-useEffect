@@ -7,6 +7,8 @@ import { FaOpencart } from "react-icons/fa";
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -28,9 +30,9 @@ function FilterData() {
     const [addToProduct, setAddToProduct] = useState([]);
     const [addToProductList, setAddToProductList] = useState([]);
 
-
-
     const starColors = ['text-red-500', 'text-yellow-500', 'text-blue-900', 'text-purple-900', 'text-green-500']; // star color
+
+
 
     // ------- use useEffect than run Application Ans show imidatly data For API ------- ⬇
     useEffect(() => {
@@ -159,6 +161,7 @@ function FilterData() {
     // ---------- AddtoProduct function ----------- ⬇
 
     const addToCart = (product) => {
+        toast.success(`Product Add To Cart !`)
         const existingProduct = addToProductList.find((item) => item.id === product.id);
         if (existingProduct) {
             const updatedCart = addToProductList.map((item) =>
@@ -191,6 +194,7 @@ function FilterData() {
     return (
         <>
             <div className='w-full  flex h-screen bg-gray-900 '>
+                <ToastContainer position='top-center' autoClose={1000}/>
                 {/* SideBar  */}
                 <div className={` ${isMenuShow === true ? 'w-80 lg:block hidden translate-x-0' : 'fixed lg:hidden block -translate-x-full'}transition-transform duration-300 ease-in-out top-0 left-0 bg-gradient-to-bl from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-screen z-10 `}>
                     <div>
