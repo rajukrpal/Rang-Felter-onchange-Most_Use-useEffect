@@ -189,7 +189,6 @@ function FilterData() {
         const storedProducts = JSON.parse(localStorage.getItem('product')) || [];
         setAddToProductList(storedProducts);
     }, []);
-    console.log("----------->", addToProductList)
 
     return (
         <>
@@ -242,7 +241,6 @@ function FilterData() {
                                         onChange={handleRatingChange}
                                         checked={selectedRatings.includes(star)}
                                     />
-                                    {/* <span className={`text-red-600`}>{star}</span> */}
                                     <span className={`${starColors[star - 1]}`}>{star}</span>
                                 </div>
                             ))}
@@ -370,7 +368,7 @@ function FilterData() {
 
 
                                                             product.id === item.id ? (
-                                                                <span className='capitalize text-[12px] flex items-center gap-1 text-green-400'><IoCheckmarkDoneCircle size={20} />add to cart</span>
+                                                                <span key={product.id} className='capitalize text-[12px] flex items-center gap-1 text-green-400'><IoCheckmarkDoneCircle size={20} />add to cart</span>
                                                             ) : (
                                                                 ""
                                                             )
