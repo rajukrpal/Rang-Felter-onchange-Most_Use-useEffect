@@ -30,7 +30,16 @@ body {
   background: linear-gradient(to right, #4F46E5 40%, #0EA5E9 50%, #10B981 10%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* font-size: 2rem;  */
-  /* font-weight: bold; */
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+html, body {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+}
+
 

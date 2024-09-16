@@ -6,6 +6,8 @@ import { RiMenuFold2Fill } from "react-icons/ri";
 import { FaOpencart } from "react-icons/fa";
 import Image from 'next/image';
 import Link from 'next/link';
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
+
 
 
 
@@ -24,6 +26,7 @@ function FilterData() {
     const [isMenuShow, setIsMenuShow] = useState(true);
     const [loading, setLoading] = useState(true);
     const [addToProduct, setAddToProduct] = useState([]);
+    const [addToProductList, setAddToProductList] = useState([]);
 
 
 
@@ -154,16 +157,23 @@ function FilterData() {
     };
 
     // ---------- AddtoProduct function ----------- ⬇
+
     const addToCart = (product) => {
-        let existingProducts = JSON.parse(localStorage.getItem('product')) || [];
-
-        const productWithTime = { ...product, time: new Date().getTime() };
-
-        const updatedProducts = [...existingProducts, productWithTime];
-
-        setAddToProduct(updatedProducts);
-        localStorage.setItem('product', JSON.stringify(updatedProducts));
+        const existingProduct = addToProductList.find((item) => item.id === product.id);
+        if (existingProduct) {
+            const updatedCart = addToProductList.map((item) =>
+                item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+            );
+            setAddToProductList(updatedCart);
+            localStorage.setItem('product', JSON.stringify(updatedCart));
+        } else {
+            const updatedCart = [...addToProductList, { ...product, quantity: 1 }];
+            setAddToProductList(updatedCart);
+            localStorage.setItem('product', JSON.stringify(updatedCart));
+        }
     };
+
+
 
 
     useEffect(() => {
@@ -172,10 +182,15 @@ function FilterData() {
     }, []);
 
 
+    useEffect(() => {
+        const storedProducts = JSON.parse(localStorage.getItem('product')) || [];
+        setAddToProductList(storedProducts);
+    }, []);
+    console.log("----------->", addToProductList)
 
     return (
         <>
-            <div className='w-full  flex h-screen bg-gray-800 '>
+            <div className='w-full  flex h-screen bg-gray-900 '>
                 {/* SideBar  */}
                 <div className={` ${isMenuShow === true ? 'w-80 lg:block hidden translate-x-0' : 'fixed lg:hidden block -translate-x-full'}transition-transform duration-300 ease-in-out top-0 left-0 bg-gradient-to-bl from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% h-screen z-10 `}>
                     <div>
@@ -301,7 +316,7 @@ function FilterData() {
                             <Link href={'/carts'}><div className="relative ">
                                 <FaOpencart size={30} className="text-blue-600" />
                                 <span className="h-5 w-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs absolute -top-2 -right-2">
-                                    {addToProduct.length}
+                                    {addToProductList.length}
                                 </span>
                             </div></Link>
                         </div>
@@ -310,7 +325,7 @@ function FilterData() {
                     {/* Add Card component */}
                     {
                         loading ? (
-                            <div className="flex items-center justify-center min-h-[90vh]">
+                            <div className="flex items-center justify-center min-h-[85vh] border">
                                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
                             </div>
                         ) : (
@@ -342,8 +357,22 @@ function FilterData() {
                                                     </div>
                                                     <div className='flex justify-between my-2'>
                                                         <button className=' font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#2B94E6]' onClick={() => addToCart(product)}>Add to card</button>
+
                                                         <button className='font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#FFA726]'>Buy now</button>
                                                     </div>
+
+                                                    {
+                                                        addToProductList.map((item) => (
+
+
+                                                            product.id === item.id ? (
+                                                                <span className='capitalize text-[12px] flex items-center gap-1 text-green-400'><IoCheckmarkDoneCircle size={20} />add to cart</span>
+                                                            ) : (
+                                                                ""
+                                                            )
+
+                                                        ))
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -381,7 +410,7 @@ function FilterData() {
                         </div>
                     </footer>
                 </div>
-            </div>
+            </div >
         </>
     )
 }

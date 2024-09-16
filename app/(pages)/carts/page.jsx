@@ -17,25 +17,26 @@ function cart() {
     }, []);
 
     const removeToCart = (product) => {
-        const updatedCart = addToProductList.filter(
-            (item) => {
-                console.log("🚀 ~ removeToCart ~ item:", item)
-                return item.time !== product.time
-            }
-        );
-
-        setAddToProductList(updatedCart);
-        localStorage.setItem('product', JSON.stringify(updatedCart));
-
-        console.log('Product removed from cart:', product);
+        const existingProduct = addToProductList.find((item) => item.id === product.id);
+        if (existingProduct && existingProduct.quantity > 1) {
+            const updatedCart = addToProductList.map((item) =>
+                item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
+            );
+            setAddToProductList(updatedCart);
+            localStorage.setItem('product', JSON.stringify(updatedCart));
+        } else {
+            const updatedCart = addToProductList.filter((item) => item.id !== product.id);
+            setAddToProductList(updatedCart);
+            localStorage.setItem('product', JSON.stringify(updatedCart));
+        }
     };
 
 
 
     return (
         <>
-            <div className='bg-gray-800 h-screen'>
-                <div className='flex items-center gap-5 px-5'>
+            <div className='bg-gray-900 h-screen'>
+                <div className='flex items-center gap-5 px-5 sticky top-0 bg-gray-700'>
                     <div className='text-blue-500'>
                         <Link href={'/'}><FaArrowAltCircleLeft className='' size={25} /></Link>
                     </div>
@@ -49,42 +50,50 @@ function cart() {
                             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
                         </div>
                     ) : (
-                        <div className='grid grid-cols-12 gap-5 md:px-5 px-10 pt-5 overflow-y-scroll h-[80vh]'>
-                            {
-                                addToProductList.map((product, index) => (
-                                    <div key={product?.time || index} className='xl:col-span-2 lg:col-span-3 md:col-span-4 col-span-12  '>
-                                        <div className="max-w-sm my-5 overflow-hidden rounded-lg shadow-lg bg-white ">
-                                            <div className="flex justify-center  ">
-                                                <Image
-                                                    height={288}
-                                                    width={1000}
-                                                    src={product.image}
-                                                    alt={product.title}
-                                                    className="w-full h-40 object-contain p-5"
-                                                />
-                                            </div>
+                        <>
+                            {addToProductList.length === 0 ? (
+                                <div className="flex items-center justify-center min-h-[85vh]">
+                                    <p className="text-gray-300 text-lg">No products in the cart.</p>
+                                </div>
+                            ) : (
+                                <div className='grid grid-cols-12 gap-5 md:px-5 px-10 pt-5 overflow-y-scroll h-[85vh] '>
+                                    {
+                                        addToProductList.map((product, index) => (
+                                            <div key={product?.time || index} className='xl:col-span-2 lg:col-span-3 md:col-span-4 col-span-12'>
+                                                <div className="max-w-sm my-5 overflow-hidden rounded-lg shadow-lg bg-white">
+                                                    <div className="flex justify-center">
+                                                        <Image
+                                                            height={288}
+                                                            width={1000}
+                                                            src={product.image}
+                                                            alt={product.title}
+                                                            className="w-full h-40 object-contain p-5"
+                                                        />
+                                                    </div>
 
-                                            <div className="p-3">
-                                                <h2 className="font-bold mb-1 text-gray-900 truncate ">{product.title}</h2>
-                                                <p className="text-gray-400 text-sm mb-1 truncate">{product.description}</p>
-                                                <p className="text-gray-900 font-semibold mb-1"> ₹ {product.price}</p>
-                                                <p className="text-gray-700 mb-1 ">Category: {product.category}</p>
-                                                <div className="flex items-center">
-                                                    <span className="text-yellow-500 text-sm">
-                                                        {"★".repeat(Math.round(product.rating.rate))}
-                                                    </span>
-                                                    <span className="ml-2 text-gray-700 text-sm">({product.rating.count})</span>
-                                                </div>
-                                                <div className='flex justify-between my-2'>
-                                                    <button className=' font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#f05635]' onClick={() => removeToCart(product)}>Remove Cart</button>
-                                                    <button className='font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#FFA726]'>Buy now</button>
+                                                    <div className="p-3">
+                                                        <h2 className="font-bold mb-1 text-gray-900 truncate">{product.title}</h2>
+                                                        <p className="text-gray-400 text-sm mb-1 truncate">{product.description}</p>
+                                                        <p className="text-gray-900 font-semibold mb-1"> ₹ {product.price}</p>
+                                                        <p className="text-gray-700 mb-1">Category: {product.category}</p>
+                                                        <div className="flex items-center">
+                                                            <span className="text-yellow-500 text-sm">
+                                                                {"★".repeat(Math.round(product.rating.rate))}
+                                                            </span>
+                                                            <span className="ml-2 text-gray-700 text-sm">({product.rating.count})</span>
+                                                        </div>
+                                                        <div className='flex justify-between my-2'>
+                                                            <button className='font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#f05635]' onClick={() => removeToCart(product)}>Remove Cart <span>{product.quantity}</span></button>
+                                                            <button className='font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#FFA726]'>Buy now</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
+                                        ))
+                                    }
+                                </div>
+                            )}
+                        </>
                     )
                 }
 
@@ -124,3 +133,5 @@ function cart() {
 
 
 export default cart
+
+
