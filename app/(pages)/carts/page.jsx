@@ -106,7 +106,7 @@ function cart() {
                             <center className='capitalize font-semibold text-blue-300 py-2'>Order detail</center>
                             <div className='text-center space-y-3'>
                                 <h5>GST: {calculateGST().toFixed(2)} % </h5>
-                                <h5>Shopping Charge: ₹ {calculateShoppingCharge().toFixed(2)}</h5>
+                                <h5>Shipping Charges: ₹ {calculateShoppingCharge().toFixed(2)}</h5>
                                 <h5>Total Amount: ₹ {calculateTotalAmount().toFixed(2)}</h5>
                                 <h5>Final Pay Amount: ₹ {calculateFinalAmount().toFixed(2)}</h5>
                             </div>

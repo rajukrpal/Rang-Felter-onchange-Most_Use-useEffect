@@ -309,7 +309,7 @@ function FilterData() {
                         <div className="flex items-center gap-4">
                             {/* Search Input */}
                             <input
-                                className="md:w-96 w-32 py-2 px-4 rounded-xl outline-none border-2 border-gray-300 focus:border-blue-400 transition duration-300"
+                                className="md:w-96 w-32 py-2 px-4 rounded-xl text-black outline-none border-2 border-gray-300 focus:border-blue-400 transition duration-300"
                                 placeholder="Search..."
                                 onChange={(e) => setSearchData(e.target.value)}
                                 type="search"
@@ -358,7 +358,7 @@ function FilterData() {
                                                         <span className="ml-2 text-gray-700 text-sm">({product.rating.count})</span>
                                                     </div>
                                                     <div className='flex justify-between my-2'>
-                                                        <button className=' font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#2B94E6]' onClick={() => addToCart(product)}>Add to card</button>
+                                                        <button className=' font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#2B94E6]' onClick={() => addToCart(product)}>Add to cart</button>
 
                                                         <button className='font-semibold text-white px-2 py-1 rounded-md text-sm bg-[#FFA726]'>Buy now</button>
                                                     </div>
